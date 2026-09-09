@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Permitir microfone</title>
+    <link rel="stylesheet" href="popup.css">
+    <style>
+        /* Pagina de uma tarefa so: abre, pede a permissao, informa e fecha.
+           Existe porque o painel lateral do Chrome NAO consegue exibir o pedido
+           de permissao — numa aba normal ele aparece. */
+        body { display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .cartao {
+            max-width: 420px; padding: 28px 30px; border-radius: 14px;
+            background: var(--surface); border: 1px solid var(--border);
+            text-align: center;
+        }
+        .cartao h1 { font-size: 17px; margin: 14px 0 8px; color: var(--text-primary); }
+        .cartao p { font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 0 0 18px; }
+        .cartao svg { width: 40px; height: 40px; stroke: var(--accent); fill: none; stroke-width: 1.6; }
+        #estado { font-size: 13px; margin-top: 16px; min-height: 20px; }
+        .ok { color: var(--success, #22c55e); }
+        .ruim { color: var(--error, #ef4444); }
+    </style>
+</head>
+<body>
+    <div class="cartao">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="9" y="2" width="6" height="11" rx="3"/>
+            <path d="M5 10v1a7 7 0 0 0 14 0v-1"/>
+            <line x1="12" y1="18" x2="12" y2="22"/>
+        </svg>
+        <h1>Liberar o microfone</h1>
+        <p>Clique no botão abaixo e escolha <b>Permitir</b> na janelinha do navegador.
+           É uma vez só — depois o ditado funciona direto no painel.</p>
+        <button id="permitir" class="btn-primary" type="button">Permitir microfone</button>
+        <p id="estado"></p>
+    </div>
+    <script src="mic.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "Shark Git",
+  "version": "2.6.10",
+  "description": "Edite seu projeto do GitHub com IA e crie commits direto no repositório.",
+  "permissions": [
+    "storage",
+    "sidePanel",
+    "declarativeNetRequest",
+    "audioCapture"
+  ],
+  "host_permissions": [
+    "https://api.syyck.store/*",
+    "https://www.youtube.com/*",
+    "http://127.0.0.1:8765/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "yt-embed",
+        "enabled": true,
+        "path": "dnr-youtube.json"
+      }
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "popup.html"
+  },
+  "action": {
+    "default_title": "Shark Git",
+    "default_icon": {
+      "16": "brand.png",
+      "48": "brand.png",
+      "128": "brand.png"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; img-src 'self' data: https://i.ytimg.com; frame-src https://www.youtube.com"
+  },
+  "icons": {
+    "16": "brand.png",
+    "48": "brand.png",
+    "128": "brand.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://lovable.dev/*",
+        "https://*.lovable.dev/*"
+      ],
+      "js": [
+        "lovable-fab.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ]
+}

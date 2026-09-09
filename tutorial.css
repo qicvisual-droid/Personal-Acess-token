@@ -1,0 +1,740 @@
+/* =============================================
+   Shark Git — Meus projetos, Tutorial e player
+   Complementa popup.css / git.css (mesma paleta)
+   ============================================= */
+
+/* ---- Meus projetos (multi-repositório) ---- */
+.repo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.repo-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.repo-item:hover {
+    border-color: var(--border-light);
+    background: var(--surface);
+}
+
+.repo-item.active {
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+}
+
+.repo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.repo-item.active .repo-dot {
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.repo-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.repo-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.repo-path {
+    font-size: 10px;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.repo-acts {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.repo-act {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.repo-act:hover {
+    color: var(--text-primary);
+    background: var(--surface-hover);
+}
+
+.repo-act.danger:hover {
+    color: var(--error);
+    background: var(--error-bg);
+}
+
+.repo-act svg {
+    width: 13px;
+    height: 13px;
+}
+
+/* Confirmação de remoção, no próprio item (diálogo nativo não funciona no
+   side panel do Chrome). */
+.repo-confirm {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+}
+
+.repo-confirm span {
+    flex: 1;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+}
+
+.repo-confirm-yes,
+.repo-confirm-no {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 9px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.repo-confirm-yes {
+    border-color: rgba(255, 107, 107, 0.4);
+    color: var(--error);
+}
+
+.repo-confirm-yes:hover {
+    background: var(--error-bg);
+    border-color: var(--error);
+}
+
+.repo-confirm-no:hover {
+    color: var(--text-primary);
+    background: var(--surface-hover);
+}
+
+.repo-rename-input {
+    flex: 1;
+    min-width: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-family: inherit;
+    padding: 4px 7px;
+    outline: none;
+}
+
+/* Ação secundária: presente, sem competir com o botão principal. */
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px dashed var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-ghost:hover {
+    color: var(--text-accent);
+    border-color: var(--accent);
+    border-style: solid;
+    background: var(--accent-subtle);
+}
+
+.btn-ghost svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.field .opt {
+    font-style: normal;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* ---- Tutorial ---- */
+.tut-intro h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+}
+
+.tut-intro p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.tut-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tut-step {
+    padding: 14px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.tut-step-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.tut-num {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--accent);
+    color: var(--text-accent);
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tut-step h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.tut-step p {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.tut-step p strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.tut-checklist {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.tut-checklist code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10.5px;
+    color: var(--text-accent);
+    background: var(--accent-subtle);
+    border: 1px solid rgba(21, 193, 93, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 2px 6px;
+}
+
+.tut-video,
+.tut-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    text-align: left;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 10px 11px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.tut-video:hover,
+.tut-link:hover {
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+    transform: translateY(-1px);
+}
+
+.tut-link svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    color: var(--text-accent);
+}
+
+/* Miniatura do vídeo: mostra do que se trata antes do clique. A imagem vem do
+   CDN do YouTube (i.ytimg.com) — leve, e não carrega o player. */
+.tut-thumb {
+    position: relative;
+    width: 84px;
+    aspect-ratio: 16 / 9;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: #000;
+    display: block;
+}
+
+.tut-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+    transition: opacity var(--transition-fast);
+}
+
+.tut-video:hover .tut-thumb img {
+    opacity: 1;
+}
+
+.tut-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tut-play svg {
+    width: 26px;
+    height: 26px;
+    color: #fff;
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.8));
+    transition: transform var(--transition-fast);
+}
+
+.tut-video:hover .tut-play svg {
+    transform: scale(1.15);
+    color: var(--text-accent);
+}
+
+/* Alvo pela CLASSE, não por `.tut-video > span`: aquele seletor tem
+   especificidade maior que `.tut-thumb` e transformava a miniatura (que também é
+   span filho) em coluna flex, quebrando o quadro do thumbnail. */
+.tut-video-txt,
+.tut-link > span {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.tut-video em,
+.tut-link em {
+    font-style: normal;
+    font-size: 10px;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tut-tips {
+    padding: 14px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+}
+
+.tut-tips h3 {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+}
+
+.tut-tips ul {
+    margin: 0;
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.tut-tips li {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+}
+
+.tut-tips li::marker {
+    color: var(--accent);
+}
+
+.tut-tips strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.tut-tips em {
+    font-style: normal;
+    color: var(--text-muted);
+}
+
+.tut-support {
+    text-align: center;
+    padding: 4px 0 8px;
+}
+
+.tut-support p {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+
+/* ---- Preview do vídeo (modal) ----
+   Capa e título aparecem aqui; o play abre o YouTube em aba, porque o player
+   embutido é recusado em página de extensão (erro 153). */
+.video-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    animation: fadeIn 0.2s ease;
+}
+
+.video-overlay.hidden {
+    display: none;
+}
+
+.video-box {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 13px;
+}
+
+.video-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.video-bar span {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.35;
+}
+
+.video-preview {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: #000;
+    cursor: pointer;
+    display: block;
+}
+
+.video-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.9;
+    transition: opacity var(--transition-fast);
+}
+
+.video-preview:hover img {
+    opacity: 1;
+}
+
+.video-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-play svg {
+    width: 46px;
+    height: 46px;
+    color: #fff;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.9));
+    transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.video-preview:hover .video-play svg {
+    transform: scale(1.12);
+    color: var(--text-accent);
+}
+
+.video-note {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    margin: 0;
+    text-align: center;
+}
+
+/* Palco do video: troca a capa pelo iframe no clique do play. Mantem a mesma
+   caixa 16:9 nos dois estados, para nao dar salto de layout. */
+.video-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #000;
+}
+
+.video-stage iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+/* ---- Rodape da mensagem: hora + copiar ---- */
+/* A hora ja tinha margin-top e padding proprios; o rodape assume o espacamento
+   e a hora fica so com o texto, senao o botao herdava o recuo e desalinhava. */
+.message-foot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    padding: 0 8px;
+}
+
+.message-foot .message-time {
+    margin-top: 0;
+    padding: 0;
+}
+
+/* A bolha do usuario alinha a direita: inverte a ordem para o botao nao ficar
+   grudado na borda da tela. */
+.message.user .message-foot {
+    flex-direction: row-reverse;
+}
+
+.msg-copy {
+    background: none;
+    border: none;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    opacity: 0;
+    transition: color var(--transition-fast), background var(--transition-fast), opacity var(--transition-fast);
+}
+
+/* Aparece no hover da mensagem: presente quando precisa, invisivel quando nao.
+   Em foco tambem, para quem navega por teclado. */
+.message:hover .msg-copy,
+.msg-copy:focus-visible,
+.msg-copy.copiado {
+    opacity: 1;
+}
+
+.msg-copy:hover {
+    color: var(--text-primary);
+    background: var(--surface-hover);
+}
+
+.msg-copy.copiado {
+    color: var(--text-accent);
+}
+
+.msg-copy svg {
+    width: 13px;
+    height: 13px;
+}
+
+/* ---- Seletor de projeto no chat ---- */
+/* O badge virou <button>: zera os defaults do navegador (fonte, borda, cursor)
+   para continuar com a mesma aparencia de rotulo que tinha como <span>. */
+.project-badge {
+    font-family: inherit;
+    cursor: default;
+    text-align: left;
+}
+
+.project-badge.switchable {
+    cursor: pointer;
+    padding-right: 18px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%278%27 height=%278%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2335d67a%27 stroke-width=%273%27><polyline points=%276 9 12 15 18 9%27/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 7px center;
+}
+
+.project-badge.switchable:hover {
+    border-color: var(--accent);
+    color: var(--text-accent);
+}
+
+/* Ancora do dropdown: o bloco da esquerda do header. */
+.header-left {
+    position: relative;
+}
+
+.project-switch {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 6px;
+    min-width: 220px;
+    max-width: 280px;
+    z-index: 60;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: fadeIn 0.15s ease;
+}
+
+.project-switch.hidden {
+    display: none;
+}
+
+.project-switch-head {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    padding: 2px 4px 4px;
+}
+
+.project-switch-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.project-switch-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 7px 8px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.project-switch-item:hover:not(:disabled) {
+    background: var(--surface-hover);
+    border-color: var(--border-light);
+}
+
+.project-switch-item.active {
+    background: var(--accent-subtle);
+    border-color: rgba(21, 193, 93, 0.25);
+    cursor: default;
+}
+
+.project-switch-item.active .repo-dot {
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.project-switch-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.project-switch-manage {
+    background: none;
+    border: none;
+    border-top: 1px solid var(--border);
+    margin-top: 3px;
+    padding: 7px 4px 2px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 10.5px;
+    text-align: left;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.project-switch-manage:hover {
+    color: var(--text-accent);
+}

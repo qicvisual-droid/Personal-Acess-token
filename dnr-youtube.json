@@ -1,0 +1,21 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "_comment": "O player do YouTube recusa o embed quando a requisicao chega sem Referer, e o Chrome nao envia Referer de pagina de extensao (origem chrome-extension://). Resultado: 'Erro 153'. Medido: sem Referer o playabilityStatus vem ERROR; com um Referer https ele vem OK. Esta regra preenche esse header SO na requisicao do iframe do player. Nao toca em nenhuma outra requisicao.",
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "Referer",
+          "operation": "set",
+          "value": "https://api.syyck.store/"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "|https://www.youtube.com/embed/",
+      "resourceTypes": ["sub_frame"]
+    }
+  }
+]

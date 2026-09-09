@@ -1,0 +1,1599 @@
+/* =============================================
+   Shark Git - Popup Styles
+   Dark (#0e1116) & green (#15c15d) palette with animated grid
+   ============================================= */
+
+:root {
+    --bg-primary: #0e1116;
+    --bg-secondary: #141a21;
+    --bg-tertiary: #1a212a;
+    --bg-input: #0b0f14;
+    --surface: #1a222c;
+    --surface-hover: #232d39;
+    --border: #16301f;
+    --border-light: #23492f;
+
+    --text-primary: #e6f2ea;
+    --text-secondary: #9db3a6;
+    /* Era #5f7367: 3.16 de contraste sobre --surface, abaixo do minimo de 4.5
+       do WCAG AA. Este tom mantem a familia da paleta e chega a 4.59 sobre
+       surface e 5.41 sobre o fundo. E a cor das dicas e dos rotulos
+       auxiliares, entao a diferenca aparece na tela inteira. */
+    --text-muted: #768f80;
+    --text-accent: #35d67a;
+
+    --accent: #15c15d;
+
+    --accent-rgb: 21, 193, 93;
+
+    --accent-deep-rgb: 127, 29, 29;
+    --accent-hover: #22d66c;
+    --accent-glow: rgba(21, 193, 93, 0.3);
+    --accent-subtle: rgba(21, 193, 93, 0.08);
+    --accent-deep: #0d7a3a;
+
+    --success: #4ade80;
+    --success-bg: rgba(74, 222, 128, 0.1);
+    --error: #ff6b6b;
+    --error-bg: rgba(255, 107, 107, 0.1);
+    --warning: #fbbf24;
+
+    --user-bubble: linear-gradient(135deg, #17a34a, #0b6e34);
+    --ai-bubble: #161d24;
+
+    --grid-color: rgba(21, 193, 93, 0.06);
+    --grid-size: 32px;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
+    --shadow-glow: 0 0 20px var(--accent-glow);
+
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Reset & Base ---- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+}
+
+/* Animated grid with slow drift */
+body::before {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+    pointer-events: none;
+    z-index: 0;
+    animation: gridDrift 60s linear infinite;
+}
+
+/* Pulsing radial glow */
+body::after {
+    content: '';
+    position: fixed;
+    top: -30%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(ellipse at 50% 0%, rgba(21, 193, 93, 0.07) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    animation: glowPulse 6s ease-in-out infinite;
+}
+
+@keyframes gridDrift {
+    from { transform: translate(0, 0); }
+    to { transform: translate(var(--grid-size), var(--grid-size)); }
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Ensure all direct children are above the grid */
+body > * {
+    position: relative;
+    z-index: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: var(--radius-full);
+    transition: background 0.3s;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/* ---- Header ---- */
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(14, 17, 22, 0.95), rgba(22, 29, 36, 0.95));
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+    animation: headerSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes headerSlideDown {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Animated accent line under header */
+#header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.6;
+    animation: headerLineGlow 3s ease-in-out infinite;
+}
+
+@keyframes headerLineGlow {
+    0%, 100% { opacity: 0.3; background: linear-gradient(90deg, transparent, var(--accent-deep), transparent); }
+    50% { opacity: 0.8; background: linear-gradient(90deg, transparent, var(--accent-hover), transparent); }
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--accent);
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 4px var(--accent-glow));
+    animation: iconPulse 3s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+    0%, 100% { filter: drop-shadow(0 0 4px var(--accent-glow)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 10px var(--accent-glow)); transform: scale(1.08); }
+}
+
+.header-text h1 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--text-primary), var(--accent), var(--text-primary));
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShimmer 4s ease-in-out infinite;
+}
+
+@keyframes textShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.project-badge {
+    display: inline-block;
+    font-size: 10px;
+    color: var(--text-muted);
+    background: var(--accent-subtle);
+    padding: 1px 8px;
+    border-radius: var(--radius-full);
+    margin-top: 2px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 1px solid rgba(21, 193, 93, 0.15);
+    transition: all 0.4s ease;
+}
+
+.project-badge.active {
+    color: var(--text-accent);
+    border-color: rgba(21, 193, 93, 0.4);
+    animation: badgeFadeIn 0.5s ease;
+}
+
+@keyframes badgeFadeIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.header-status {
+    display: flex;
+    align-items: center;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: all 0.5s ease;
+}
+
+.dot-disconnected {
+    background: var(--error);
+    box-shadow: 0 0 6px rgba(255, 107, 107, 0.5);
+    animation: pulseDot 2s infinite;
+}
+
+.dot-connected {
+    background: var(--success);
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.5);
+    animation: pulseDotConnected 3s infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(255, 107, 107, 0.5); }
+    50% { opacity: 0.4; box-shadow: 0 0 12px rgba(255, 107, 107, 0.8); }
+}
+
+@keyframes pulseDotConnected {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(74, 222, 128, 0.5); }
+    50% { opacity: 0.6; box-shadow: 0 0 14px rgba(74, 222, 128, 0.7); }
+}
+
+/* ---- Messages Area ---- */
+#messages-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: transparent;
+}
+
+/* Welcome Message */
+.welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+    gap: 16px;
+    flex: 1;
+    opacity: 0;
+    animation: welcomeFadeIn 0.8s ease 0.3s forwards;
+}
+
+@keyframes welcomeFadeIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.welcome-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--accent);
+    opacity: 0.6;
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+    animation: welcomeIconFloat 4s ease-in-out infinite;
+}
+
+@keyframes welcomeIconFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-6px) rotate(2deg); }
+    75% { transform: translateY(4px) rotate(-1deg); }
+}
+
+.welcome p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 13px;
+}
+
+/* Message Bubbles */
+.message {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+    animation: messagePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.message.user {
+    align-self: flex-end;
+    align-items: flex-end;
+}
+
+.message.ai {
+    align-self: flex-start;
+    align-items: flex-start;
+}
+
+@keyframes messagePop {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.message-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    padding: 0 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.message-bubble {
+    padding: 10px 14px;
+    line-height: 1.55;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    font-size: 13px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.message-bubble:hover {
+    transform: scale(1.01);
+}
+
+.message.user .message-bubble {
+    background: var(--user-bubble);
+    color: #fff;
+    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+.message.user .message-bubble:hover {
+    box-shadow: var(--shadow-md), 0 0 30px var(--accent-glow);
+}
+
+.message.ai .message-bubble {
+    background: rgba(22, 29, 36, 0.9);
+    color: var(--text-primary);
+    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-sm);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(4px);
+}
+
+.message.ai .message-bubble:hover {
+    border-color: var(--border-light);
+    box-shadow: var(--shadow-md);
+}
+
+.message-time {
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    padding: 0 8px;
+    opacity: 0;
+    animation: fadeInSlow 0.5s ease 0.3s forwards;
+}
+
+@keyframes fadeInSlow {
+    to { opacity: 1; }
+}
+
+/* File attachments in messages */
+.message-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.message-file-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--text-accent);
+    background: var(--accent-subtle);
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(21, 193, 93, 0.2);
+    transition: all 0.2s ease;
+}
+
+.message-file-tag:hover {
+    background: rgba(21, 193, 93, 0.15);
+    transform: translateY(-1px);
+}
+
+.message-file-tag svg {
+    width: 10px;
+    height: 10px;
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    display: flex;
+    gap: 5px;
+    padding: 12px 16px;
+    align-items: center;
+}
+
+.typing-indicator .dot-typing {
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite;
+    box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.typing-indicator .dot-typing:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator .dot-typing:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+    30% { transform: translateY(-8px) scale(1.2); opacity: 1; }
+}
+
+/* ---- File Preview Area ---- */
+.file-preview-area {
+    padding: 8px 16px;
+    background: rgba(14, 17, 22, 0.95);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    max-height: 120px;
+    overflow-y: auto;
+    animation: slideUpSmooth 0.3s ease;
+}
+
+@keyframes slideUpSmooth {
+    from { opacity: 0; max-height: 0; padding: 0 16px; }
+    to { opacity: 1; max-height: 120px; padding: 8px 16px; }
+}
+
+.file-preview-area.hidden {
+    display: none;
+}
+
+.file-preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.file-preview-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    max-width: 180px;
+    animation: fileItemPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes fileItemPop {
+    from { opacity: 0; transform: scale(0.8) translateY(8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.file-preview-item:hover {
+    border-color: var(--border-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.file-preview-item .file-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+}
+
+.file-preview-item:hover .file-icon {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.file-preview-item .file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.file-preview-item .file-size {
+    font-size: 9px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.file-preview-item .remove-file {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.file-preview-item .remove-file:hover {
+    color: var(--error);
+    transform: rotate(90deg) scale(1.2);
+}
+
+.file-preview-item .remove-file svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* Upload progress bar */
+.file-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.file-preview-item.uploading {
+    border-color: var(--accent);
+    opacity: 0.85;
+    animation: uploadPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes uploadPulse {
+    0%, 100% { border-color: var(--accent); }
+    50% { border-color: var(--accent-hover); box-shadow: 0 0 12px var(--accent-glow); }
+}
+
+.file-preview-item.uploading .file-icon {
+    animation: spin 1.2s linear infinite;
+}
+
+.file-preview-item.uploaded {
+    border-color: var(--success);
+    animation: uploadSuccess 0.5s ease;
+}
+
+@keyframes uploadSuccess {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.file-preview-item.uploaded .file-icon {
+    color: var(--success);
+}
+
+.file-preview-item.upload-error {
+    border-color: var(--error);
+    animation: uploadError 0.4s ease;
+}
+
+@keyframes uploadError {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+.file-preview-item.upload-error .file-icon {
+    color: var(--error);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---- Input Area ---- */
+#input-area {
+    padding: 10px 14px 12px;
+    background: rgba(14, 17, 22, 0.95);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    animation: inputAreaSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+}
+
+@keyframes inputAreaSlideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 6px 8px 6px 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow), inset 0 0 20px rgba(21, 193, 93, 0.03);
+}
+
+#message-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: inherit;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    max-height: 100px;
+    min-height: 20px;
+    padding: 4px 0;
+}
+
+#message-input::placeholder {
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+}
+
+#message-input:focus::placeholder {
+    color: rgba(110, 85, 88, 0.5);
+}
+
+#message-input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.input-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.settings-inline-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.settings-inline-actions .btn-secondary {
+    flex: 1 1 180px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+}
+
+.btn-icon:hover:not(:disabled) {
+    color: var(--text-primary);
+    background: var(--surface);
+    transform: rotate(-15deg) scale(1.1);
+}
+
+.btn-icon:active:not(:disabled) {
+    transform: rotate(-15deg) scale(0.95);
+}
+
+.btn-icon:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.btn-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.btn-send {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shine sweep effect on send button */
+.btn-send::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.15) 50%,
+        transparent 60%
+    );
+    transition: transform 0.6s ease;
+    transform: translateX(-100%);
+}
+
+.btn-send:hover:not(:disabled)::after {
+    transform: translateX(100%);
+}
+
+.btn-send:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: scale(1.1);
+    /* O segundo brilho era rgba(21,193,93) — verde, sobra do tema antigo. Nao
+       era vermelho, mas tambem nao acompanhava a marca do revendedor. */
+    box-shadow: 0 0 16px var(--accent-glow), 0 0 30px rgba(var(--accent-rgb), 0.15);
+}
+
+.btn-send:active:not(:disabled) {
+    transform: scale(0.9);
+}
+
+.btn-send:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.btn-send svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+}
+
+.btn-send:hover:not(:disabled) svg {
+    transform: translate(2px, -2px);
+}
+
+.btn-stop {
+    background: rgba(120, 24, 24, 0.95);
+    border: 1px solid rgba(255, 107, 107, 0.25);
+    color: #fff;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+}
+
+.btn-stop:hover:not(:disabled) {
+    background: rgba(150, 30, 30, 0.95);
+    transform: scale(1.08);
+}
+
+.btn-stop:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.btn-stop svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ---- Toast Notification ---- */
+#toast-container {
+    position: fixed;
+    /* 60px era a altura do cabeçalho de ANTES. Ele cresceu quando o nome do
+       projeto e o selo do banco passaram a ficar embaixo do título, e o aviso
+       ficou colado nele. 76px = logo abaixo da borda do cabeçalho (que termina
+       por volta dos 65px), sem cair em cima da primeira mensagem. */
+    top: 76px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.toast {
+    padding: 8px 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    border-radius: var(--radius-full);
+    backdrop-filter: blur(12px);
+    pointer-events: auto;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-20px) scale(0.9);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    max-width: 85%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.toast.visible {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.toast.hidden {
+    transform: translateY(-20px) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toast.status-error {
+    background: rgba(40, 10, 10, 0.9);
+    color: var(--error);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.toast.status-success {
+    background: rgba(10, 30, 15, 0.9);
+    color: var(--success);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.toast.status-info {
+    background: rgba(10, 28, 18, 0.9);
+    color: var(--text-accent);
+    border: 1px solid rgba(21, 193, 93, 0.25);
+}
+
+/* ---- Loading state for entire input ---- */
+.input-loading .input-wrapper {
+    opacity: 0.6;
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+.commit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.commit-link,
+.commit-revert-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.commit-link {
+    color: var(--text-accent);
+    background: var(--accent-subtle);
+    border: 1px solid rgba(21, 193, 93, 0.18);
+}
+
+.commit-link:hover {
+    background: rgba(21, 193, 93, 0.14);
+    transform: translateY(-1px);
+}
+
+.commit-revert-btn {
+    border: 1px solid rgba(255, 107, 107, 0.25);
+    background: rgba(58, 21, 21, 0.95);
+    color: #ffd3d3;
+    cursor: pointer;
+}
+
+.commit-revert-btn:hover:not(:disabled) {
+    background: rgba(85, 26, 26, 0.95);
+    transform: translateY(-1px);
+}
+
+.commit-revert-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.commit-link svg,
+.commit-revert-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+@keyframes loadingPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.4; }
+}
+
+/* ---- Animations ---- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Drag & Drop visual feedback ---- */
+.input-wrapper.drag-over {
+    border-color: var(--accent-hover) !important;
+    box-shadow: 0 0 0 2px var(--accent-glow), 0 0 30px var(--accent-glow) !important;
+    animation: dragPulse 1s ease-in-out infinite;
+}
+
+@keyframes dragPulse {
+    0%, 100% { box-shadow: 0 0 0 2px var(--accent-glow), 0 0 20px var(--accent-glow); }
+    50% { box-shadow: 0 0 0 3px var(--accent-glow), 0 0 40px var(--accent-glow); }
+}
+
+/* ============================================================
+   Brand Refresh - preto + vermelho inspirado na referência
+   ============================================================ */
+
+:root {
+    --bg-primary: #08090d;
+    --bg-secondary: #0d0f14;
+    --bg-tertiary: #13151c;
+    --bg-input: #090b10;
+    --surface: #11131a;
+    --surface-hover: #181b24;
+    --border: #21242d;
+    --border-light: #383c48;
+    --text-primary: #ececf1;
+    --text-secondary: #a4a6b1;
+    --text-muted: #656874;
+    --text-accent: #ff5a5f;
+    --accent: #dc2626;
+    --accent-rgb: 220, 38, 38;
+    --accent-deep-rgb: 127, 29, 29;
+    --accent-hover: #b91c1c;
+    --accent-glow: rgba(var(--accent-rgb), 0.24);
+    --accent-subtle: rgba(var(--accent-rgb), 0.1);
+    --accent-deep: #7f1d1d;
+    --success: #22c55e;
+    --success-bg: rgba(34, 197, 94, 0.1);
+    --error: #ef4444;
+    --error-bg: rgba(239, 68, 68, 0.12);
+    --warning: #f59e0b;
+    --user-bubble: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    --ai-bubble: rgba(17, 19, 26, 0.96);
+    --grid-color: rgba(var(--accent-rgb), 0.04);
+    --shadow-sm: 0 8px 18px rgba(0, 0, 0, 0.22);
+    --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 20px 46px rgba(0, 0, 0, 0.38);
+    --shadow-glow: 0 0 18px rgba(var(--accent-rgb), 0.16);
+}
+
+body {
+    font-family: "Segoe UI", Inter, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(var(--accent-deep-rgb), 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.04), transparent 22%),
+        linear-gradient(180deg, #08090d 0%, #0b0c10 100%);
+}
+
+body::before {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 24px 24px;
+    animation: none;
+    opacity: 0.32;
+}
+
+body::after {
+    top: auto;
+    left: auto;
+    right: -15%;
+    bottom: -30%;
+    width: 90%;
+    height: 90%;
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.16) 0%, rgba(var(--accent-rgb), 0.04) 25%, transparent 65%);
+    animation: none;
+}
+
+#header {
+    padding: 14px 16px 12px;
+    background: linear-gradient(180deg, rgba(8, 9, 13, 0.98), rgba(17, 19, 26, 0.95));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+#header::after {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.85), transparent);
+    opacity: 0.9;
+    animation: none;
+}
+
+.header-left {
+    gap: 12px;
+}
+
+.header-icon {
+    display: none;
+}
+
+.brand-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.18), rgba(var(--accent-rgb), 0.04));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 20px rgba(0, 0, 0, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.header-text h1 {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #f3f4f6;
+    background: none;
+    -webkit-text-fill-color: initial;
+    animation: none;
+}
+
+.project-badge {
+    margin-top: 4px;
+    padding: 3px 10px;
+    font-size: 10px;
+    color: #d7d8dd;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+}
+
+.project-badge.active {
+    color: #fff4f4;
+    background: rgba(var(--accent-rgb), 0.16);
+    border-color: rgba(var(--accent-rgb), 0.34);
+}
+
+.dot-disconnected {
+    background: #ef4444;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.45);
+}
+
+.dot-connected {
+    background: #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+
+#messages-area,
+#input-area,
+.file-preview-area {
+    background-color: transparent;
+}
+
+.welcome {
+    padding: 30px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(180deg, rgba(17, 19, 26, 0.9), rgba(10, 11, 16, 0.9));
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+}
+
+.welcome-icon {
+    color: var(--accent);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.28));
+    animation: none;
+}
+
+.message.user .message-bubble {
+    background: var(--user-bubble);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 22px rgba(var(--accent-deep-rgb), 0.28);
+}
+
+.message.user .message-bubble:hover {
+    box-shadow: 0 14px 30px rgba(var(--accent-deep-rgb), 0.34);
+}
+
+.message.ai .message-bubble {
+    background: var(--ai-bubble);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(10px);
+}
+
+.message.ai .message-bubble:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.message-file-tag {
+    color: #ffd4d4;
+    background: rgba(var(--accent-rgb), 0.12);
+    border-color: rgba(var(--accent-rgb), 0.22);
+}
+
+.typing-indicator .dot-typing {
+    box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.22);
+}
+
+.file-preview-area {
+    border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+.file-preview-item,
+.input-wrapper,
+.settings-group,
+.license-card,
+.commit-card {
+    background: linear-gradient(180deg, rgba(17, 19, 26, 0.96), rgba(10, 11, 16, 0.96));
+    border-color: rgba(255, 255, 255, 0.07);
+    box-shadow: var(--shadow-sm);
+}
+
+.file-preview-item:hover,
+.commit-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+#input-area {
+    border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+.input-wrapper {
+    padding: 8px 10px 8px 14px;
+}
+
+.input-wrapper:focus-within,
+.input-wrapper.drag-over {
+    border-color: rgba(var(--accent-rgb), 0.52) !important;
+    box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.32), 0 0 20px rgba(var(--accent-rgb), 0.14) !important;
+}
+
+.btn-icon:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+    transform: none;
+}
+
+.btn-icon:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.btn-send,
+.btn-primary {
+    background: linear-gradient(180deg, var(--accent) 0%, var(--accent-hover) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(var(--accent-deep-rgb), 0.26);
+}
+
+.btn-send:hover:not(:disabled),
+.btn-primary:hover:not(:disabled) {
+    /* O topo era #ef4444 cravado: com a marca azul, o botao acendia VERMELHO ao
+       passar o mouse. Passei batido na primeira varredura porque confundi com a
+       cor de erro — aqui ele e o topo do gradiente do botao, nao um aviso.
+       Invertido em relacao ao estado normal: clareia ao passar o mouse. */
+    background: linear-gradient(180deg, var(--accent-hover) 0%, var(--accent) 100%);
+    box-shadow: 0 14px 28px rgba(var(--accent-deep-rgb), 0.32);
+    transform: translateY(-1px);
+}
+
+.btn-send:active:not(:disabled),
+.btn-primary:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.btn-secondary,
+.commit-revert-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+}
+
+.btn-secondary:hover:not(:disabled),
+.commit-revert-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+}
+
+.btn-stop {
+    background: rgba(var(--accent-rgb), 0.18);
+    border-color: rgba(var(--accent-rgb), 0.34);
+}
+
+.btn-stop:hover:not(:disabled) {
+    background: rgba(var(--accent-rgb), 0.28);
+}
+
+.settings-panel {
+    padding: 14px;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.settings-group {
+    padding: 14px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+}
+
+.settings-group h2 {
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #f1f2f6;
+    letter-spacing: 0.02em;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.field span,
+.field-check span {
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.field input,
+.field select,
+.license-input {
+    width: 100%;
+    background: rgba(8, 9, 13, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.field input:focus,
+.field select:focus,
+.license-input:focus {
+    border-color: rgba(var(--accent-rgb), 0.55);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+}
+
+.field input::placeholder,
+.license-input::placeholder {
+    color: var(--text-muted);
+}
+
+.field-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.field-check input[type="checkbox"] {
+    accent-color: var(--accent);
+}
+
+.hint,
+.license-info,
+.license-status {
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+.license-card {
+    max-width: 360px;
+    padding: 24px 20px;
+    border-radius: 18px;
+}
+
+.license-lock {
+    color: var(--accent);
+}
+
+.license-status.success {
+    color: var(--success);
+}
+
+.license-status.error {
+    color: var(--error);
+}
+
+.commit-card {
+    margin-top: 12px;
+    border-radius: 14px;
+    padding: 12px;
+}
+
+.commit-card-header {
+    color: #f3f4f6;
+}
+
+.changed-file {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-top: 8px;
+}
+
+.tag.add {
+    background: rgba(34, 197, 94, 0.14);
+    color: #86efac;
+}
+
+.tag.edit {
+    background: rgba(var(--accent-rgb), 0.14);
+    color: #fca5a5;
+}
+
+.tag.del {
+    background: rgba(245, 158, 11, 0.16);
+    color: #fcd34d;
+}
+
+.commit-link {
+    color: #ffd7d7;
+    background: rgba(var(--accent-rgb), 0.1);
+    border-color: rgba(var(--accent-rgb), 0.18);
+}
+
+.commit-link:hover {
+    background: rgba(var(--accent-rgb), 0.16);
+}
+
+.toast {
+    border-radius: 12px;
+    white-space: normal;
+    line-height: 1.35;
+}
+
+.toast.status-error {
+    background: rgba(52, 14, 14, 0.96);
+    border-color: rgba(239, 68, 68, 0.24);
+}
+
+.toast.status-success {
+    background: rgba(12, 35, 18, 0.96);
+    border-color: rgba(34, 197, 94, 0.2);
+}
+
+.toast.status-info {
+    background: rgba(36, 12, 12, 0.96);
+    color: #ffd7d7;
+    border-color: rgba(var(--accent-rgb), 0.22);
+}
+
+/* ---- Menu do header ----
+   Cinco icones sem rotulo exigiam decorar o desenho de cada um. A lista
+   mostra icone e nome juntos, que e o que torna a barra usavel por quem
+   abriu a extensao pela primeira vez. */
+.menu-wrap {
+    position: relative;
+}
+
+.menu-drop {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 60;
+    min-width: 214px;
+    padding: 6px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    animation: menu-in 140ms ease;
+}
+
+@keyframes menu-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    /* 40px de altura: alvo de toque confortavel, nao os 28px de um icone solto. */
+    padding: 10px 12px;
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 13.5px;
+    text-align: left;
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.menu-item:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+}
+
+/* focus-visible (e nao :focus) para o anel aparecer em quem navega por
+   teclado sem piscar em todo clique de mouse. */
+.menu-item:focus-visible,
+#menu-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    color: var(--text-primary);
+}
+
+.menu-item-ic {
+    flex: 0 0 auto;
+    display: flex;
+    width: 18px;
+    height: 18px;
+    color: var(--text-accent);
+}
+.menu-item-ic svg { width: 18px; height: 18px; }
+
+.menu-item-tx {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Botao do menu aberto: fica aceso, para a pessoa ver de onde a lista saiu. */
+#menu-btn[aria-expanded="true"] {
+    color: var(--text-primary);
+    background: var(--surface);
+}
+
+/* Quem pediu menos animacao no sistema recebe menos animacao. */
+@media (prefers-reduced-motion: reduce) {
+    .menu-drop { animation: none; }
+}
+
+/* ---- Acessibilidade ----
+
+   FOCO: sem anel visivel, quem navega por teclado nao tem como saber onde
+   esta. `:focus-visible` (e nao `:focus`) mostra o anel para teclado e o
+   omite no clique de mouse, que era a razao de terem sido removidos. */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* MOVIMENTO: a grade animada do fundo e as transicoes longas incomodam quem
+   tem sensibilidade vestibular. Quem pediu menos movimento no sistema
+   operacional recebe a interface parada — sem perder funcao nenhuma. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Separa "voltar para a conversa" do resto: e a saida, nao mais uma tela. */
+.menu-sep {
+    display: block;
+    height: 1px;
+    margin: 4px 6px;
+    background: var(--border-light);
+}
+
+/* Com o aviso de licença vencendo na tela, tudo desce a altura dele. O `:has()`
+   evita ter que avisar o CSS pelo JS — uma coordenação a menos para alguém
+   esquecer ao mexer no banner. */
+body:has(#renew-banner:not(.hidden)) #toast-container {
+    top: 118px;
+}
+
+/* Gravando: pulsa para deixar claro que o microfone esta aberto. Usa a
+   cor da marca, entao acompanha a personalizacao do revendedor. */
+.btn-icon.gravando {
+    color: var(--accent);
+    background: var(--accent-subtle);
+    animation: micPulso 1.4s ease-in-out infinite;
+}
+@keyframes micPulso {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.45); }
+    50% { box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0); }
+}

@@ -1,0 +1,1495 @@
+/* =============================================
+   Cypher Git - additional styles
+   Settings panel, changed-files list, commit card
+   Builds on popup.css (shared variables & palette)
+   ============================================= */
+
+/* ---- Settings Panel ---- */
+.settings-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+}
+
+.settings-panel.hidden {
+    display: none;
+}
+
+.settings-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    background: rgba(20, 20, 20, 0.7);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+}
+
+.settings-group h2 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-accent);
+    margin-bottom: 2px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.field span {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.field input,
+.field select {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-family: inherit;
+    padding: 8px 10px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input:focus,
+.field select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.field select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239db3a6' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+.hint {
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--text-muted);
+}
+
+.hint strong {
+    color: var(--text-secondary);
+}
+
+.settings-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.btn-primary svg,
+.btn-secondary svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 0 16px var(--accent-glow);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--text-primary);
+    background: var(--accent-subtle);
+}
+
+.btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.field-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.field-check input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.field-check span {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* ---- License gate ---- */
+.license-gate {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: fadeIn 0.3s ease;
+}
+
+.license-gate.hidden {
+    display: none;
+}
+
+.license-card {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 30px 22px;
+    background: rgba(20, 26, 33, 0.7);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.license-lock {
+    width: 42px;
+    height: 42px;
+    color: var(--accent);
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+}
+
+.license-card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.license-card > p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-top: -4px;
+}
+
+.license-input {
+    width: 100%;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    padding: 11px 10px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.license-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.license-card .btn-primary {
+    margin-top: 2px;
+}
+
+.license-status {
+    min-height: 16px;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.license-status.error {
+    color: var(--error);
+}
+
+.license-status.success {
+    color: var(--success);
+}
+
+.license-info {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'Consolas', 'Courier New', monospace;
+    word-break: break-all;
+}
+
+/* ---- Changed files card inside AI messages ---- */
+.commit-card {
+    margin-top: 10px;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: rgba(12, 12, 12, 0.8);
+}
+
+.commit-card-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    background: rgba(21, 193, 93, 0.06);
+    border-bottom: 1px solid var(--border);
+}
+
+.commit-card-header svg {
+    width: 12px;
+    height: 12px;
+    color: var(--accent);
+}
+
+.changed-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(42, 16, 21, 0.5);
+}
+
+.changed-file:last-child {
+    border-bottom: none;
+}
+
+.changed-file .tag {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+}
+
+.changed-file .tag.edit {
+    color: var(--warning);
+    background: rgba(251, 191, 36, 0.12);
+}
+
+.changed-file .tag.add {
+    color: var(--success);
+    background: var(--success-bg);
+}
+
+.changed-file .tag.del {
+    color: var(--error);
+    background: var(--error-bg);
+}
+
+.changed-file .path {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.commit-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--success);
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: var(--radius-sm);
+    background: var(--success-bg);
+    transition: all 0.2s ease;
+}
+
+.commit-link:hover {
+    background: rgba(74, 222, 128, 0.18);
+    transform: translateY(-1px);
+}
+
+.commit-link svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* ---- Histórico de commits ---- */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.history-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.history-item-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-sha {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    padding: 2px 5px;
+    flex-shrink: 0;
+}
+
+.history-msg {
+    font-size: 12px;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-meta {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.history-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.history-empty {
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 8px 0;
+}
+
+/* ==========================================================================
+   BANCO DE DADOS (Lovable)
+   Canal separado do commit: o cartao de SQL e o ponto onde a pessoa decide,
+   entao ele precisa parecer diferente de um cartao de commit — e o nivel de
+   risco precisa ser visivel antes da leitura do comando.
+   ========================================================================== */
+
+/* Seletor de alvo do pedido (codigo x banco) */
+.mode-switch {
+    display: flex;
+    gap: 6px;
+    padding: 0 4px 8px;
+}
+
+.mode-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: color .15s, background .15s, border-color .15s;
+}
+
+.mode-btn svg { width: 13px; height: 13px; }
+
+.mode-btn:hover:not(.active) {
+    color: var(--text-primary);
+    background: var(--surface-hover);
+}
+
+.mode-btn.active {
+    color: var(--text-accent);
+    background: var(--accent-subtle);
+    border-color: var(--border-light);
+}
+
+/* Cartao de aprovacao do SQL */
+.sql-card {
+    margin-top: 10px;
+    border: 1px solid var(--border-light);
+    border-left-width: 3px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: rgba(12, 12, 12, 0.8);
+}
+
+/* A cor da borda diz o risco antes de a pessoa ler o comando. */
+.sql-card.sql-leitura    { border-left-color: var(--accent); }
+.sql-card.sql-escrita    { border-left-color: var(--warning); }
+.sql-card.sql-estrutura  { border-left-color: var(--warning); }
+.sql-card.sql-destrutivo { border-left-color: var(--error); }
+
+.sql-card-header {
+    padding: 7px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--text-secondary);
+    background: rgba(21, 193, 93, 0.06);
+    border-bottom: 1px solid var(--border);
+}
+
+.sql-card.sql-destrutivo .sql-card-header {
+    color: var(--error);
+    background: var(--error-bg);
+}
+
+.sql-card-note {
+    margin: 0;
+    padding: 7px 10px 0;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--text-secondary);
+}
+
+.sql-card-warn {
+    margin: 7px 10px 0;
+    padding: 6px 8px;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--warning);
+    background: rgba(251, 191, 36, 0.1);
+    border-radius: var(--radius-sm);
+}
+
+.sql-card.sql-destrutivo .sql-card-warn {
+    color: var(--error);
+    background: var(--error-bg);
+}
+
+.sql-card-done {
+    margin: 7px 10px 10px;
+    padding: 6px 8px;
+    font-size: 11px;
+    color: var(--success);
+    background: var(--success-bg);
+    border-radius: var(--radius-sm);
+}
+
+/* O comando na integra: sem truncar e sem quebrar o que o Postgres le. */
+.sql-code {
+    margin: 8px 10px;
+    padding: 8px 10px;
+    max-height: 220px;
+    overflow: auto;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--text-primary);
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.sql-card-actions {
+    display: flex;
+    gap: 6px;
+    padding: 0 10px 10px;
+}
+
+.sql-run-btn, .sql-cancel-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: filter .15s, background .15s;
+}
+
+.sql-run-btn {
+    color: #06210f;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+}
+
+.sql-run-btn:hover:not(:disabled) { background: var(--accent-hover); }
+
+/* Destrutivo em vermelho: o botao nao deve parecer com o de rotina. */
+.sql-run-btn.danger {
+    color: #fff;
+    background: #c0392b;
+    border-color: #c0392b;
+}
+
+.sql-run-btn.danger:hover:not(:disabled) { background: #d94436; }
+
+.sql-run-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.sql-cancel-btn {
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+}
+
+.sql-cancel-btn:hover:not(:disabled) {
+    color: var(--text-primary);
+    background: var(--surface-hover);
+}
+
+.sql-card.sql-cancelled { opacity: .6; }
+
+/* Resultado da consulta */
+.sql-rows {
+    margin: 0 10px 10px;
+    overflow: auto;
+    max-height: 260px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.sql-rows table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.sql-rows th, .sql-rows td {
+    padding: 5px 8px;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(35, 73, 47, 0.4);
+}
+
+.sql-rows th {
+    position: sticky;
+    top: 0;
+    color: var(--text-accent);
+    background: var(--bg-tertiary);
+    font-weight: 600;
+}
+
+.sql-rows td { color: var(--text-primary); }
+.sql-rows tr:last-child td { border-bottom: none; }
+
+/* Select de projeto do banco, no padrao dos campos das configuracoes. */
+#lov-project-select {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--text-primary);
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+#lov-project-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Indicador do banco, junto do botao "Banco de dados".
+   VERDE = disponivel, VERMELHO pulsando = o Lovable travou o acesso.
+   Fica sempre visivel quando ha banco escolhido: antes so aparecia no bloqueio, e
+   sem referencia o dono nao sabia se estava tudo bem ou se o indicador falhou.
+   Nunca impede o envio — o limite deles nao e fixo, entao bloquear recusaria
+   trabalho que ia funcionar. */
+.db-dot {
+    width: 7px;
+    height: 7px;
+    margin-left: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--text-muted);
+}
+
+.db-dot-ok {
+    background: var(--success);
+    box-shadow: 0 0 5px rgba(74, 222, 128, 0.55);
+}
+
+/* Pulsa porque e temporario e volta sozinho: o movimento diz "aguarde", nao
+   "quebrou". */
+.db-dot-off {
+    background: var(--error);
+    box-shadow: 0 0 5px rgba(255, 107, 107, 0.6);
+    animation: db-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes db-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.db-aviso {
+    margin: 0 4px 8px;
+    padding: 7px 9px;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--warning);
+    background: rgba(251, 191, 36, 0.09);
+    border: 1px solid rgba(251, 191, 36, 0.22);
+    border-radius: var(--radius-sm);
+}
+
+/* Banco de dados de cada projeto, na lista "Meus projetos".
+   Cada repositorio guarda o SEU banco, entao quem usa mais de um precisa ver a
+   qual banco cada projeto esta ligado — senao nao sabe onde a alteracao vai cair. */
+.repo-db {
+    display: block;
+    margin-top: 2px;
+    font-size: 10px;
+    color: var(--text-accent);
+}
+
+/* Sem banco escolhido: fica apagado, nao alarmante. E um passo que falta, nao um
+   erro — o cliente pode nem usar banco naquele projeto. */
+.repo-db.vazio {
+    color: var(--text-muted);
+}
+
+/* Campo de token com botao de olho.
+   Oculto por padrao: o token da acesso de escrita aos repositorios do cliente, e
+   essa tela costuma ser aberta com alguem ao lado. O olho serve pra conferir um
+   valor colado errado. */
+.field-senha {
+    position: relative;
+    display: block;
+}
+
+.field-senha input {
+    width: 100%;
+    padding-right: 36px; /* espaco do botao, pro texto nao passar por baixo */
+}
+
+.field-eye {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: color .15s, background .15s;
+}
+
+.field-eye svg { width: 15px; height: 15px; }
+
+.field-eye:hover {
+    color: var(--text-primary);
+    background: var(--surface-hover);
+}
+
+/* Revelado: o icone acende, pra deixar claro que o token esta a vista. */
+.field-eye.ativo { color: var(--text-accent); }
+
+/* Licenca perto do fim. Abaixo de um dia o contador mostra segundos e o texto
+   destaca — e quando avisar ainda muda algo (dar tempo de renovar). */
+.licenca-urgente {
+    color: var(--warning);
+}
+
+.licenca-expirada {
+    color: var(--error);
+}
+
+/* ==========================================================================
+   PERGUNTAS FREQUENTES
+   Lista longa so e consultada se tiver busca — por isso o campo fica fixo no
+   topo. As respostas usam <details> nativo: abre/fecha sem JS e o teclado
+   funciona de graca.
+   ========================================================================== */
+.faq-head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding-bottom: 10px;
+    background: var(--bg-primary);
+}
+
+.faq-head h2 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+.faq-search {
+    position: relative;
+    display: block;
+}
+
+.faq-search svg {
+    position: absolute;
+    top: 50%;
+    left: 9px;
+    transform: translateY(-50%);
+    width: 13px;
+    height: 13px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.faq-search input {
+    width: 100%;
+    padding: 8px 10px 8px 29px;
+    font-size: 12px;
+    color: var(--text-primary);
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.faq-search input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.faq-lista { padding-bottom: 12px; }
+
+.faq-cat {
+    margin: 14px 0 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-accent);
+}
+
+.faq-cat:first-child { margin-top: 4px; }
+
+.faq-item {
+    margin-bottom: 5px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.faq-item summary {
+    padding: 9px 11px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--text-primary);
+    cursor: pointer;
+    list-style: none;
+}
+
+/* Esconde o triangulo padrao e usa um sinal proprio, que gira ao abrir. */
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-item summary::after {
+    content: '+';
+    float: right;
+    margin-left: 8px;
+    color: var(--text-muted);
+    font-weight: 700;
+    transition: transform .15s;
+}
+
+.faq-item[open] summary::after {
+    content: '−';
+    color: var(--text-accent);
+}
+
+.faq-item summary:hover { background: var(--surface-hover); }
+
+.faq-item[open] summary {
+    color: var(--text-accent);
+    border-bottom: 1px solid var(--border);
+}
+
+.faq-item p {
+    margin: 0;
+    padding: 9px 11px;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+}
+
+/* Formulario de edicao de um projeto salvo.
+   Abre ABAIXO do item (nao no lugar dele) para a pessoa nao perder de vista qual
+   projeto esta editando. */
+.repo-edit {
+    margin: 4px 0 10px;
+    padding: 10px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+}
+
+.repo-edit-field {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.repo-edit-field span {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+
+.repo-edit-field input {
+    width: 100%;
+    padding: 7px 9px;
+    font-size: 12px;
+    color: var(--text-primary);
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.repo-edit-field input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Token e banco aparecem como INFORMACAO, nao como campo: o token e um so por
+   licenca (editar aqui sugeriria um por projeto) e o banco troca na secao propria,
+   que precisa consultar a conta Lovable. */
+.repo-edit-info {
+    margin: 0 0 4px;
+    font-size: 10.5px;
+    color: var(--text-secondary);
+}
+
+.repo-edit-nota {
+    margin: 4px 0 0;
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.repo-edit-acts {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.repo-edit-acts button {
+    padding: 6px 12px;
+    font-size: 11px;
+}
+
+/* Escolha do caminho do banco: Lovable Cloud ou Supabase.
+   Os dois sao funcionais. Existe escolha porque nem todo projeto expoe as
+   credenciais do Supabase (ai so o Lovable serve), e quem tem acesso ao Supabase
+   ganha um limite muito maior (120 consultas/min anunciadas, contra o travamento
+   silencioso do Lovable por volta da 16a). */
+.prov-tabs {
+    display: flex;
+    gap: 4px;
+    margin: 8px 0 10px;
+    padding: 3px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.prov-tab {
+    flex: 1;
+    padding: 6px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color .15s, background .15s;
+}
+
+.prov-tab:hover:not(.active) { color: var(--text-primary); }
+
+.prov-tab.active {
+    color: var(--text-accent);
+    background: var(--accent-subtle);
+}
+
+/* Quando usar cada um: a nota fica sempre visivel, nao escondida num tooltip. E a
+   informacao que decide a escolha. */
+.prov-nota {
+    margin: 0 0 10px;
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--text-muted);
+}
+
+/* Passo a passo do token. Numerado porque o valor do Supabase e mostrado UMA vez:
+   errar a ordem custa gerar outro token. */
+.prov-passos {
+    margin: 0 0 10px;
+    padding-left: 18px;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.prov-passos li { margin-bottom: 3px; }
+
+#supa-project-select {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--text-primary);
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+#supa-project-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Cabecalho: projeto e banco lado a lado.
+   O par importa junto — "qual projeto" e "qual banco" sao a mesma decisao, e ver so
+   um dos dois e o caminho para mexer no banco errado. */
+.header-badges {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.db-badge {
+    margin-top: 4px;
+    padding: 3px 9px;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: .2px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: filter .15s;
+}
+
+.db-badge:hover { filter: brightness(1.18); }
+
+/* Cores diferentes por provedor: com dois caminhos possiveis, a cor e o que diz de
+   relance qual esta em uso — verde do Supabase, roxo do Lovable. */
+.db-badge-supa {
+    color: #b8f5d0;
+    background: rgba(62, 207, 142, 0.16);
+    border: 1px solid rgba(62, 207, 142, 0.34);
+}
+
+.db-badge-lov {
+    color: #e2d5ff;
+    background: rgba(155, 125, 251, 0.16);
+    border: 1px solid rgba(155, 125, 251, 0.34);
+}
+
+/* Banco travado: mesmo estado da bolinha do chat. As duas partes da tela nunca
+   devem contar historias diferentes sobre o mesmo banco. */
+.db-badge-off {
+    color: #ffd9d9;
+    background: rgba(239, 68, 68, 0.18);
+    border-color: rgba(239, 68, 68, 0.38);
+    animation: db-pulse 1.8s ease-in-out infinite;
+}
+
+/* Seletor de banco dentro da edicao do projeto, e o botao que ativa o projeto
+   quando ele nao e o ativo (o servidor grava o banco no ativo, entao escolher para
+   um inativo gravaria no lugar errado). */
+.repo-edit-select {
+    width: 100%;
+    padding: 7px 9px;
+    font-size: 12px;
+    color: var(--text-primary);
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.repo-edit-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.repo-edit-select:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.repo-edit-ativar {
+    margin-top: 4px;
+    font-size: 10.5px;
+}
+
+/* Bloco de ajustes comuns aos dois provedores (a trava de comandos destrutivos).
+   Separado das abas por uma linha: e o que diz "isto vale para os dois". */
+.db-comum {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+/* Atalho para o tutorial, no topo da secao GitHub.
+   Destacado de proposito: o cliente leigo trava justamente aqui (token, escopos,
+   formato do repositorio) e o passo a passo estava escondido atras do icone no topo. */
+.btn-ajuda {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 9px 11px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-accent);
+    background: var(--accent-subtle);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+}
+
+.btn-ajuda svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.btn-ajuda:hover {
+    background: rgba(21, 193, 93, 0.14);
+    border-color: var(--accent);
+}
+
+/* Oferta de trocar de caminho quando o pedido nao combina com o modo escolhido.
+   Reusa o estilo dos botoes do cartao de SQL de proposito: o gesto e o mesmo — a
+   extensao propoe, o cliente decide. */
+.troca-modo {
+    padding: 8px 0 0;
+}
+
+/* ============================================================
+   ROLETA DE SORTEIO
+
+   A faixa desliza atras de uma marca fixa no centro. O premio NAO e
+   decidido aqui: o servidor sorteia e a animacao apenas para na celula
+   correspondente — por isso mexer no DOM nao muda o resultado.
+   ============================================================ */
+.rf-vp {
+    position: relative;
+    overflow: hidden;
+    height: 62px;
+    margin: 10px 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid rgba(255, 255, 255, .09);
+}
+
+/* A marca central e a referencia da parada. */
+.rf-mark {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--warning);
+    z-index: 2;
+    box-shadow: 0 0 8px rgba(251, 191, 36, .75);
+}
+
+.rf-track {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    will-change: transform;
+}
+
+.rf-cell {
+    flex: 0 0 auto;
+    width: 66px;
+    margin: 0 5px;
+    height: 46px;
+    border-radius: 8px;
+    background: var(--accent-subtle);
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+}
+.rf-cell .h { font-weight: 700; font-size: 15px; line-height: 1; }
+.rf-cell .u { font-size: 10px; opacity: .75; }
+
+.rf-result {
+    min-height: 18px;
+    margin: 6px 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+.rf-result.ganhou { color: var(--success); }
+.rf-result.erro { color: var(--error); }
+
+/* ---- Historico de bonus ---- */
+.bonus-hist {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: 210px;
+    overflow-y: auto;
+}
+
+.bonus-linha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 11px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 12.5px;
+}
+
+/* O ganho e o dado que a pessoa procura: fica em destaque e primeiro. */
+.bonus-linha .g {
+    flex: 0 0 auto;
+    min-width: 62px;
+    font-weight: 700;
+    color: var(--success);
+}
+.bonus-linha .o { flex: 1; min-width: 0; color: var(--text-secondary); }
+.bonus-linha .q { flex: 0 0 auto; color: var(--text-muted); font-size: 11.5px; }
+
+.bonus-vazio {
+    padding: 14px 11px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12.5px;
+}
+
+/* ---- Escolha de conexão (conta ou token colado) ---- */
+.oauth-box {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 7px;
+    margin-bottom: 10px;
+}
+
+.oauth-estado {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+}
+.oauth-estado.ligado { color: var(--success); font-weight: 600; }
+
+/* Separador em texto: deixa claro que sao DOIS caminhos para a mesma
+   coisa, e nao um passo obrigatorio antes do outro. */
+.oauth-ou {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 3px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    text-transform: lowercase;
+}
+.oauth-ou::before,
+.oauth-ou::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-light);
+}
+
+.btn-link {
+    align-self: flex-start;
+    padding: 2px 0;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.btn-link:hover { color: var(--error); }
+
+/* ============================================================
+   ETAPAS DE CONEXAO
+
+   Antes os dois caminhos (autorizar a conta e colar um token) ficavam
+   abertos ao mesmo tempo, um embaixo do outro, e chegavam a se
+   contradizer: no Supabase havia quatro passos ensinando a gerar um
+   token logo acima do botao que dispensava os quatro. Agora e uma
+   pergunta de cada vez.
+   ============================================================ */
+.etapa {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.etapa-pergunta {
+    margin: 2px 0 2px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Explica o caminho recomendado sem transformar a tela num texto. */
+.etapa-nota {
+    margin: -4px 0 4px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.etapa-acoes {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.conectado-linha {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.ok-dot {
+    flex: 0 0 auto;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+}
+
+/* ---- Lista de repositorios ----
+   Substitui o campo owner/repo digitado, que era a origem do "404" que
+   parecia bug e era so o nome escrito errado. O campo continua embaixo,
+   para quem tem repositorio fora da lista. */
+.gh-repos-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 230px;
+    overflow-y: auto;
+}
+
+.gh-repo-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    /* 40px de alvo: a lista e usada com o dedo tambem. */
+    padding: 9px 11px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 12.5px;
+    text-align: left;
+    cursor: pointer;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.gh-repo-item:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-light);
+    color: var(--text-primary);
+}
+.gh-repo-item.escolhido {
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.gh-repo-item .nome { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gh-repo-item .tag {
+    flex: 0 0 auto;
+    padding: 1px 7px;
+    border-radius: var(--radius-full);
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    font-size: 10.5px;
+}
+
+/* O seletor de projeto continua no DOM (e ele que guarda a escolha e
+   dispara o salvamento), mas quem aparece e a lista. `display:none` o
+   tiraria da ordem de tabulacao de um jeito que alguns leitores de tela
+   tratam mal; isto o remove da vista mantendo-o funcional. */
+.select-oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* A lista dentro da caixa de editar e mais baixa: ela divide espaco com o
+   nome, o repositorio, o banco e os botoes. */
+.repo-edit-lista {
+    max-height: 148px;
+    margin: 6px 0 2px;
+}
+
+/* Escolha do banco e do repositorio dentro da caixa de editar. */
+.repo-edit-prov {
+    margin: 6px 0 4px;
+}
+.repo-edit-prov .prov-tab {
+    font-size: 12px;
+    padding: 6px 10px;
+}
+.repo-edit-prov .prov-tab:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.repo-edit-trocar {
+    margin: 4px 0 2px;
+    font-size: 12.5px;
+}
+
+/* ============================================================
+   AVISO DE LICENCA VENCENDO
+
+   Ambar, nao vermelho: ainda nao e erro, e um prazo. Vermelho aqui
+   competiria com as mensagens de falha de verdade.
+   ============================================================ */
+.renew-banner {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 12px;
+    background: rgba(251, 191, 36, .12);
+    border-bottom: 1px solid rgba(251, 191, 36, .35);
+    font-size: 12.5px;
+    color: var(--text-primary);
+}
+
+.renew-ic { flex: 0 0 auto; display: flex; color: var(--warning); }
+.renew-ic svg { width: 17px; height: 17px; }
+.renew-texto { flex: 1; min-width: 0; }
+
+.renew-btn {
+    flex: 0 0 auto;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--warning);
+    color: #1a1200;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.renew-btn:hover { filter: brightness(1.08); }
+
+.renew-x {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    font-size: 17px;
+    cursor: pointer;
+    line-height: 1;
+}
+.renew-x:hover { color: var(--text-primary); }
+
+/* Dica que na verdade e um alerta: algo nao ligou, e ha o que fazer. */
+.hint-alerta {
+    color: var(--warning);
+    border-left: 2px solid var(--warning);
+    padding-left: 9px;
+}
+
+/* A trava de apagar dentro da edicao do projeto: separada do seletor de
+   banco por uma linha, para nao parecer parte da lista.*/
+.repo-edit-trava {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}

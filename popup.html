@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shark Git</title>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="git.css">
+    <link rel="stylesheet" href="tutorial.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="header-left">
+            <div class="brand-mark">
+                <img id="brand-logo" src="brand.png" alt="Logo Shark Git">
+            </div>
+            <div class="header-text">
+                <h1 id="brand-nome">Shark Git</h1>
+                <!-- Badge do projeto ativo. Com mais de um salvo, vira botão que
+                     abre o seletor aqui no chat, sem passar pelas configurações. -->
+                <div class="header-badges">
+                    <button id="project-id" class="project-badge" type="button">Nenhum repositório</button>
+                    <!-- Selo do banco: mostra se esta conectado e por qual caminho
+                         (Lovable ou Supabase). Clicar abre as configuracoes do banco.
+                         Fica aqui, ao lado do projeto, porque e o par que importa:
+                         "qual projeto" e "qual banco" sao a mesma decisao. -->
+                    <button id="db-badge" class="db-badge hidden" type="button"></button>
+                </div>
+            </div>
+            <!-- Seletor rápido de projeto (aberto pelo badge) -->
+            <div id="project-switch" class="project-switch hidden">
+                <div class="project-switch-head">Trocar de projeto</div>
+                <div id="project-switch-list" class="project-switch-list"></div>
+                <button id="project-switch-manage" class="project-switch-manage" type="button">Gerenciar projetos</button>
+            </div>
+        </div>
+        <div class="header-status">
+            <span id="connection-dot" class="dot dot-disconnected"></span>
+            <!-- MENU. Cinco icones sem rotulo na barra pediam adivinhacao:
+                 so o desenho dizia o que cada um fazia. Agora e um botao so,
+                 e a lista mostra icone COM nome. Os ids continuam os mesmos,
+                 entao os listeners e o controle por licenca nao mudaram. -->
+            <div class="menu-wrap">
+                <button id="menu-btn" class="btn-icon" type="button" title="Menu"
+                        aria-haspopup="true" aria-expanded="false" aria-controls="menu-drop">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <line x1="4" y1="7" x2="20" y2="7"/>
+                        <line x1="4" y1="12" x2="20" y2="12"/>
+                        <line x1="4" y1="17" x2="20" y2="17"/>
+                    </svg>
+                </button>
+                <div id="menu-drop" class="menu-drop hidden" role="menu" aria-labelledby="menu-btn">
+                <button id="chat-btn" class="menu-item" type="button" role="menuitem">
+                    <span class="menu-item-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg></span>
+                    <span class="menu-item-tx">Conversa</span>
+                </button>
+                <span class="menu-sep"></span>
+                <button id="tutorial-btn" class="menu-item" type="button" role="menuitem">
+                    <span class="menu-item-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <circle cx="12" cy="12" r="9"/> <path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/> <line x1="12" y1="17.5" x2="12" y2="17.5"/> </svg></span>
+                    <span class="menu-item-tx">Como configurar</span>
+                </button>
+                <button id="history-btn" class="menu-item" type="button" role="menuitem">
+                    <span class="menu-item-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <circle cx="12" cy="12" r="9"/> <polyline points="12 7 12 12 16 14"/> </svg></span>
+                    <span class="menu-item-tx">Histórico de commits</span>
+                </button>
+                <button id="faq-btn" class="menu-item" type="button" role="menuitem">
+                    <span class="menu-item-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H8l-4 4z"/> <line x1="9" y1="9" x2="15" y2="9"/> <line x1="9" y1="13" x2="13" y2="13"/> </svg></span>
+                    <span class="menu-item-tx">Perguntas frequentes</span>
+                </button>
+                <button id="raffle-btn" class="menu-item" type="button" role="menuitem">
+                    <span class="menu-item-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <rect x="3" y="8" width="18" height="4" rx="1"/> <path d="M5 12v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8"/> <line x1="12" y1="8" x2="12" y2="21"/> <path d="M12 8S10.5 3 8 3a2.5 2.5 0 0 0 0 5"/> <path d="M12 8s1.5-5 4-5a2.5 2.5 0 0 1 0 5"/> </svg></span>
+                    <span class="menu-item-tx">Bônus e sorteios</span>
+                </button>
+                <button id="settings-btn" class="menu-item" type="button" role="menuitem">
+                    <span class="menu-item-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <circle cx="12" cy="12" r="3"/> <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/> </svg></span>
+                    <span class="menu-item-tx">Configurações</span>
+                </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- License Gate -->
+    <section id="license-gate" class="license-gate hidden">
+        <div class="license-card">
+            <svg class="license-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <h2>Ative sua licença</h2>
+            <p>Insira a chave de licença para liberar a extensão.</p>
+            <input id="license-input" class="license-input" placeholder="LSHK-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" maxlength="64">
+            <button id="license-activate" class="btn-primary" type="button">Ativar</button>
+            <p id="license-status" class="license-status"></p>
+        </div>
+    </section>
+
+    <!-- Settings Panel -->
+    <section id="settings-panel" class="settings-panel hidden">
+        <div class="settings-group">
+            <h2>Licença</h2>
+            <p class="license-info" id="license-info">—</p>
+            <button id="license-remove" class="btn-secondary" type="button">Remover licença deste dispositivo</button>
+        </div>
+
+        <div class="settings-group">
+            <h2>Meus projetos</h2>
+            <div id="repo-list" class="repo-list"></div>
+            <p class="hint" id="repo-empty-hint">Salve um repositório abaixo para começar. Depois você troca de projeto com um clique, sem digitar o token de novo.</p>
+        </div>
+
+        <div class="settings-group">
+            <h2>GitHub</h2>
+            <!-- Atalho para o tutorial. O cliente leigo trava justamente aqui (token,
+                 escopos, formato do repositorio) e o passo a passo existia escondido
+                 atras do icone de interrogacao no topo. -->
+            <button id="gh-ajuda-btn" class="btn-ajuda" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/>
+                    <line x1="12" y1="17.5" x2="12" y2="17.5"/>
+                </svg>
+                Primeira vez? Veja como configurar
+            </button>
+            <!-- ETAPA 1 — a escolha. Os dois caminhos levam ao mesmo lugar;
+                 mostrar os dois abertos ao mesmo tempo era o que confundia. -->
+            <div id="gh-escolha" class="etapa hidden">
+                <p class="etapa-pergunta">Como você quer conectar sua conta do GitHub?</p>
+                <button id="gh-via-conta" class="btn-primary" type="button">Conectar minha conta do GitHub</button>
+                <p class="etapa-nota">Você autoriza na tela do GitHub. Sem token, sem escopo, sem copiar nada.</p>
+                <button id="gh-via-token" class="btn-ghost" type="button">Prefiro colar um token</button>
+            </div>
+
+            <!-- ETAPA 2 — caminho manual. As instrucoes vivem AQUI dentro: no
+                 caminho automatico elas nao fazem sentido nenhum. -->
+            <div id="gh-pane-token" class="etapa hidden">
+                <button id="gh-voltar" class="btn-link" type="button">← Escolher outro jeito</button>
+                <ol class="prov-passos">
+                    <li>Abra o GitHub no botão abaixo.</li>
+                    <li>Marque os escopos <strong>repo</strong> e <strong>workflow</strong>.</li>
+                    <li>Copie o token gerado e cole aqui embaixo.</li>
+                </ol>
+                <button id="gh-token-link" class="btn-ghost" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                    Gerar token no GitHub
+                </button>
+                <label class="field">
+                    <span>Token de acesso</span>
+                    <!-- Oculto por padrão: o token dá acesso de escrita aos
+                         repositórios, e o cliente costuma configurar isso com a
+                         tela compartilhada ou alguém ao lado. -->
+                    <span class="field-senha">
+                        <input type="password" id="gh-token" placeholder="ghp_... (classic)" autocomplete="off">
+                        <button id="gh-token-eye" class="field-eye" type="button" title="Mostrar o token" aria-label="Mostrar o token">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </span>
+                </label>
+            </div>
+
+            <!-- ETAPA 3 — conectada. Aqui a pessoa ESCOLHE o repositório numa
+                 lista em vez de digitar owner/repo, que era a origem do "404"
+                 que parecia bug e era só nome escrito errado. -->
+            <div id="gh-conectado" class="etapa hidden">
+                <p class="conectado-linha"><span class="ok-dot"></span><span id="gh-conta-info">Conectado</span></p>
+                <div class="etapa-acoes">
+                    <button id="gh-trocar" class="btn-link" type="button">Trocar a forma de conectar</button>
+                    <button id="gh-oauth-sair" class="btn-link hidden" type="button">Desconectar a conta</button>
+                </div>
+
+                <!-- Depois de salvar, o seletor inteiro sai e fica so isto:
+                     a confirmacao e o convite para adicionar o proximo. -->
+                <div id="gh-salvo" class="etapa hidden">
+                    <p class="conectado-linha"><span class="ok-dot"></span><span id="gh-salvo-msg">Repositório salvo.</span></p>
+                    <p class="etapa-nota">Ele já aparece em <strong>Meus projetos</strong>, no topo desta tela.</p>
+                    <button id="gh-add-outro" class="btn-secondary" type="button">Adicionar outro repositório</button>
+                </div>
+
+                <div id="gh-picker">
+                <label class="field">
+                    <span>Escolha o repositório</span>
+                    <input type="search" id="gh-repos-busca" placeholder="Buscar entre os seus repositórios..." autocomplete="off">
+                </label>
+                <div id="gh-repos-lista" class="gh-repos-lista"></div>
+                <p class="hint" id="gh-repos-msg">Carregando seus repositórios...</p>
+                <button id="gh-repos-refresh" class="btn-ghost" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M3 12a9 9 0 0 1 15.5-6.4L21 8"/><path d="M21 3v5h-5"/>
+                        <path d="M21 12a9 9 0 0 1-15.5 6.4L3 16"/><path d="M3 21v-5h5"/>
+                    </svg>
+                    Atualizar lista de repositórios
+                </button>
+
+                <label class="field">
+                    <span>Ou digite <em class="opt">(owner/repo)</em></span>
+                    <input type="text" id="gh-repo" placeholder="usuario/meu-projeto" autocomplete="off">
+                </label>
+                <label class="field">
+                    <span>Apelido do projeto <em class="opt">(opcional)</em></span>
+                    <input type="text" id="gh-label" placeholder="Ex: Loja, Site novo" autocomplete="off" maxlength="40">
+                </label>
+                <!-- Salvar AQUI, ao lado da escolha. O botao do fim da tela
+                     continua existindo, mas quem acabou de escolher o
+                     repositório nao deve ter que procurar onde confirmar. -->
+                <button id="gh-salvar" class="btn-primary" type="button">Salvar este repositório</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Banco de dados: canal separado do GitHub de propósito. O repositório
+             guarda o código; o banco só é alcançado pela API do Lovable. -->
+        <div class="settings-group">
+            <h2>Banco de dados</h2>
+            <p class="hint">O GitHub cuida do código. Para consultar ou alterar o <strong>banco de dados</strong>, escolha por onde conectar.</p>
+
+            <!-- Dois caminhos, os dois funcionais. A escolha existe porque nem todo
+                 projeto expõe as credenciais do Supabase (aí só o Lovable serve), e
+                 quem tem acesso ao Supabase ganha um limite muito maior. -->
+            <div class="prov-tabs">
+                <button id="prov-tab-lovable" class="prov-tab active" type="button">Lovable Cloud</button>
+                <button id="prov-tab-supabase" class="prov-tab" type="button">Supabase</button>
+            </div>
+
+            <div id="prov-pane-lovable">
+            <p class="prov-nota">Use quando seu projeto foi criado no Lovable. Você autoriza sua conta e pronto — não precisa de senha nem token.</p>
+
+            <div id="lov-disconnected">
+                <button id="lov-connect-btn" class="btn-primary" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                    </svg>
+                    Conectar Lovable
+                </button>
+                <p class="hint">Abre o site do Lovable para você autorizar. A autorização vale para a sua conta inteira, então ela fica guardada com segurança no servidor e você pode desconectar quando quiser.</p>
+            </div>
+
+            <div id="lov-connected" class="hidden">
+                <p class="license-info" id="lov-status-info">—</p>
+
+
+                <label class="field">
+                    <span>Projeto do banco</span>
+                    <input type="search" id="lov-projects-busca" placeholder="Buscar entre seus projetos..." autocomplete="off">
+                </label>
+                <div id="lov-projects-lista" class="gh-repos-lista"></div>
+                <p class="hint" id="lov-projects-msg">Carregando projetos...</p>
+                <!-- O seletor continua aqui, escondido: e ele que guarda a
+                     escolha e dispara o salvamento. A lista so o alimenta. -->
+                <select id="lov-project-select" class="select-oculto" tabindex="-1" aria-hidden="true">
+                    <option value="">Carregando projetos...</option>
+                </select>
+                <button id="lov-projects-refresh" class="btn-ghost" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M3 12a9 9 0 0 1 15.5-6.4L21 8"/><path d="M21 3v5h-5"/>
+                        <path d="M21 12a9 9 0 0 1-15.5 6.4L3 16"/><path d="M3 21v-5h5"/>
+                    </svg>
+                    Atualizar lista de projetos
+                </button>
+
+                <button id="lov-deploy-btn" class="btn-secondary" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M12 19V5"/><polyline points="5 12 12 5 19 12"/>
+                    </svg>
+                    Publicar projeto no Lovable
+                </button>
+                <p class="hint">Refaz a build e <strong>publica a versão atual no ar</strong>. Use depois de um commit, quando o preview do Lovable ainda mostrar a versão antiga. Não roda sozinho de propósito: publicar deixa a mudança visível para quem acessa o site.</p>
+
+                <button id="lov-disconnect-btn" class="btn-secondary" type="button">Desconectar do Lovable</button>
+            </div>
+            </div>
+
+            <!-- SUPABASE: caminho recomendado para quem tem acesso ao projeto.
+                 A API deles permite 120 consultas por minuto e avisa quando o limite
+                 chega; o Lovable trava por volta da 16a sem avisar. -->
+            <div id="prov-pane-supabase" class="hidden">
+                <p class="prov-nota">Use quando você tem acesso ao projeto no Supabase. Aguenta bem mais consultas seguidas que o Lovable.</p>
+
+                <div id="supa-disconnected">
+                    <!-- ETAPA 1 — a escolha. Antes os 4 passos de gerar token
+                         apareciam ACIMA de um botao que dispensava os 4 passos. -->
+                    <div id="supa-escolha" class="etapa hidden">
+                        <p class="etapa-pergunta">Como você quer conectar o Supabase?</p>
+                        <button id="supa-via-conta" class="btn-primary" type="button">Conectar minha conta do Supabase</button>
+                        <p class="etapa-nota">Você autoriza na tela do Supabase e escolhe a organização. Nada para copiar.</p>
+                        <button id="supa-via-token" class="btn-ghost" type="button">Prefiro colar um token</button>
+                    </div>
+
+                    <!-- ETAPA 2 — caminho manual, com os passos que só valem aqui. -->
+                    <div id="supa-pane-token" class="etapa hidden">
+                        <button id="supa-voltar" class="btn-link" type="button">← Escolher outro jeito</button>
+                        <ol class="prov-passos">
+                            <li>Abra a página de tokens do Supabase no botão abaixo.</li>
+                            <li>Clique em <strong>Generate new token</strong>, dê um nome (ex: <span class="marca-nome">Shark Git</span>) e confirme.</li>
+                            <li>Copie o valor que aparece (começa com <strong>sbp_</strong>) — ele só é mostrado uma vez.</li>
+                            <li>Cole aqui embaixo e clique em Conectar.</li>
+                        </ol>
+                        <button id="supa-token-link" class="btn-ghost" type="button">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                <polyline points="15 3 21 3 21 9"/>
+                                <line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                            Abrir a página de tokens do Supabase
+                        </button>
+                        <label class="field">
+                            <span>Token do Supabase</span>
+                            <span class="field-senha">
+                                <input type="password" id="supa-token" placeholder="sbp_..." autocomplete="off">
+                                <button id="supa-token-eye" class="field-eye" type="button" title="Mostrar o token" aria-label="Mostrar o token">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </span>
+                        </label>
+                        <button id="supa-connect-btn" class="btn-primary" type="button">Conectar Supabase</button>
+                        <p class="hint">O token fica guardado com segurança no servidor e você pode desconectar quando quiser.</p>
+                    </div>
+                </div>
+
+                <div id="supa-connected" class="hidden">
+                    <p class="license-info" id="supa-status-info">—</p>
+                    <label class="field">
+                        <span>Projeto do banco</span>
+                        <input type="search" id="supa-projects-busca" placeholder="Buscar entre seus projetos..." autocomplete="off">
+                    </label>
+                    <div id="supa-projects-lista" class="gh-repos-lista"></div>
+                    <p class="hint" id="supa-projects-msg">Carregando projetos...</p>
+                    <select id="supa-project-select" class="select-oculto" tabindex="-1" aria-hidden="true">
+                        <option value="">Carregando projetos...</option>
+                    </select>
+                    <button id="supa-projects-refresh" class="btn-ghost" type="button">Atualizar lista de projetos</button>
+                    <button id="supa-disconnect-btn" class="btn-secondary" type="button">Desconectar do Supabase</button>
+                </div>
+            </div>
+
+            <!-- COMUM AOS DOIS CAMINHOS. Estava dentro da aba do Lovable, e quem usava
+                 Supabase nunca conseguia liberar — ficava sem apagar nada e sem saber
+                 por quê. O backend aplica esta trava independente do provedor, então o
+                 lugar dela é aqui, fora da escolha. -->
+            <div id="db-comum" class="db-comum hidden">
+                <label class="field-check">
+                    <input type="checkbox" id="lov-allow-destructive">
+                    <span>Permitir comandos que apagam dados</span>
+                </label>
+                <p class="hint">Desligado, a extensão recusa <strong>DROP</strong>, <strong>TRUNCATE</strong> e alterações que apagam colunas ou desligam a proteção das tabelas. Vale para os dois caminhos. Deixe ligado só enquanto precisar: apagar dados não tem como desfazer.</p>
+            </div>
+        </div>
+
+                <!-- Mapa do projeto: agora automatico. O servidor instala e dispara a
+             geracao ao salvar o projeto, entao os dois botoes manuais
+             ("Preparar geracao automatica" e "Gerar mapa agora") sairam — eram
+             passos tecnicos que o cliente precisava descobrir sozinho, e quem nao
+             clicava tinha edicoes piores sem saber o motivo. -->
+        <div class="settings-group">
+            <h2>Entendimento do projeto</h2>
+            <label class="field-check">
+                <input type="checkbox" id="graphify-enabled">
+                <span>Ajudar a IA a entender melhor o seu projeto</span>
+            </label>
+            <p class="hint">Cria um resumo da estrutura do projeto para a IA acertar mais nas alterações, principalmente em projetos grandes. Funciona sozinho, sem você precisar fazer nada.</p>
+            <!-- Por que não ligou. Antes falhava em silêncio e tentava de novo a
+                 cada salvamento — 269 vezes numa semana, invisíveis. -->
+            <p id="mapa-bloqueado" class="hint hint-alerta hidden"></p>
+        </div>
+
+        <div class="settings-actions">
+            <button id="settings-save" class="btn-primary">Salvar e conectar</button>
+        </div>
+    </section>
+
+    <!-- Tutorial -->
+    <section id="tutorial-panel" class="settings-panel hidden">
+        <div class="tut-intro">
+            <h2>Como configurar</h2>
+            <p>Dois passos, uma vez só. Depois é só pedir as mudanças por mensagem.</p>
+        </div>
+
+        <ol class="tut-steps">
+            <li class="tut-step">
+                <div class="tut-step-head">
+                    <span class="tut-num">1</span>
+                    <h3>Conecte o Lovable ao GitHub</h3>
+                </div>
+                <p>Seu projeto na Lovable precisa estar sincronizado com um repositório. Se ainda não estiver, faça isso primeiro.</p>
+                <button class="tut-video" type="button" data-video="251mmNCFoHE" data-title="Vincular Lovable ao GitHub">
+                    <span class="tut-thumb">
+                        <img src="https://i.ytimg.com/vi/251mmNCFoHE/mqdefault.jpg" alt="" loading="lazy">
+                        <span class="tut-play">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="9 7 18 12 9 17" fill="currentColor"/></svg>
+                        </span>
+                    </span>
+                    <span class="tut-video-txt">Vincular Lovable ao GitHub<em>1 minuto</em></span>
+                </button>
+            </li>
+
+            <!-- O passo do token saiu: hoje a conexao e por OAuth, um clique, e
+                 pedir para o cliente leigo criar token com escopo `repo` e
+                 `workflow` era exatamente onde ele travava. Quem prefere token
+                 continua tendo o campo nas Configuracoes. -->
+            <li class="tut-step">
+                <div class="tut-step-head">
+                    <span class="tut-num">2</span>
+                    <h3>Preencha as Configurações</h3>
+                </div>
+                <p>Tudo acontece em uma tela só: você <strong>conecta a conta do GitHub</strong> com um clique, <strong>escolhe o repositório</strong> numa lista, <strong>conecta o banco de dados</strong> e <strong>seleciona o projeto</strong>. Não precisa criar token nem digitar nada complicado.</p>
+                <button class="tut-video" type="button" data-video="QAWmT7Ny2zw" data-title="Preenchendo as Configurações">
+                    <span class="tut-thumb">
+                        <img src="https://i.ytimg.com/vi/QAWmT7Ny2zw/mqdefault.jpg" alt="" loading="lazy">
+                        <span class="tut-play">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="9 7 18 12 9 17" fill="currentColor"/></svg>
+                        </span>
+                    </span>
+                    <span class="tut-video-txt">Preenchendo as Configurações<em>passo a passo</em></span>
+                </button>
+                <button id="tut-go-settings" class="btn-primary" type="button">Abrir configurações</button>
+            </li>
+        </ol>
+
+        <div class="tut-tips">
+            <h3>Para um bom resultado</h3>
+            <ul>
+                <li>Peça <strong>uma coisa por vez</strong>. Pedidos muito longos podem exceder o limite de resposta.</li>
+                <li>Seja específico: <em>"aumente o título da página inicial"</em> funciona melhor que <em>"melhore o site"</em>.</li>
+                <li>Toda alteração vira um commit — dá para reverter pelo histórico.</li>
+            </ul>
+        </div>
+
+        <div class="tut-support">
+            <p>Dúvida na instalação? Fale com o suporte.</p>
+        </div>
+    </section>
+
+    <!-- Preview do vídeo. Mostra capa e título aqui dentro; o play abre o
+         YouTube em aba, porque o player embutido é recusado em página de
+         extensão (erro 153). -->
+    <div id="video-overlay" class="video-overlay hidden">
+        <div class="video-box">
+            <div class="video-bar">
+                <span id="video-title">Tutorial</span>
+                <button id="video-close" class="btn-icon" type="button" title="Fechar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="video-stage" class="video-stage">
+                <button id="video-preview" class="video-preview" type="button">
+                    <img id="video-cover" src="" alt="">
+                    <span class="video-play">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="9 6 19 12 9 18" fill="currentColor"/></svg>
+                    </span>
+                </button>
+            </div>
+            <p id="video-note" class="video-note"></p>
+            <button id="video-open-tab" class="btn-primary" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/>
+                    <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Assistir no YouTube
+            </button>
+        </div>
+    </div>
+
+    <!-- Histórico de commits -->
+    <!-- Perguntas frequentes. Existe porque as mesmas duvidas voltavam por
+         suporte: onde pegar o token, por que o preview nao atualiza, por que o
+         banco as vezes nao responde. Com busca, porque uma lista longa sem busca
+         nao e consultada. -->
+    <section id="faq-panel" class="settings-panel hidden">
+        <div class="faq-head">
+            <h2>Perguntas frequentes</h2>
+            <label class="faq-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="search" id="faq-busca" placeholder="Buscar dúvida..." autocomplete="off">
+            </label>
+        </div>
+        <div id="faq-lista" class="faq-lista"></div>
+        <p id="faq-vazio" class="hint hidden">Nenhuma pergunta encontrada. Tente outra palavra.</p>
+    </section>
+
+    <section id="raffle-panel" class="settings-panel hidden">
+        <!-- Roleta de bonus: resgate UNICO por licenca. O premio vem do
+             servidor; a roleta so anima ate ele. -->
+        <div class="settings-group">
+            <h2>Sorteio de bônus</h2>
+            <p class="hint" id="raffle-sub">Carregando...</p>
+            <div class="rf-vp" id="raffle-vp"><div class="rf-mark"></div><div class="rf-track" id="raffle-track"></div></div>
+            <p class="rf-result" id="raffle-result"></p>
+            <button id="raffle-spin" class="btn-primary" type="button" disabled>Girar</button>
+        </div>
+        <!-- Sorteio diario: um giro por dia, premio menor, streak aumenta. -->
+        <div class="settings-group">
+            <h2>Sorteio diário</h2>
+            <p class="hint" id="daily-sub">Carregando...</p>
+            <div class="rf-vp" id="daily-vp"><div class="rf-mark"></div><div class="rf-track" id="daily-track"></div></div>
+            <p class="rf-result" id="daily-result"></p>
+            <button id="daily-spin" class="btn-primary" type="button" disabled>Girar hoje</button>
+        </div>
+        <!-- O que ja foi ganho. Sem isto a pessoa gira, ve o numero sumir e
+             nao tem como conferir depois quanto a extensao ja lhe deu. -->
+        <div class="settings-group">
+            <h2>Seus bônus</h2>
+            <p class="hint" id="bonus-resumo">—</p>
+            <div id="bonus-hist" class="bonus-hist"></div>
+        </div>
+    </section>
+
+    <section id="history-panel" class="settings-panel hidden">
+        <div class="settings-group">
+            <h2>Commits recentes</h2>
+            <p class="hint" id="history-branch">—</p>
+            <div id="history-list" class="history-list"></div>
+            <button id="history-refresh" class="btn-secondary" type="button">Atualizar</button>
+        </div>
+    </section>
+
+    <!-- Messages Area -->
+    <main id="messages-area">
+        <div id="welcome-message" class="welcome">
+            <svg class="welcome-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="18" cy="18" r="3"/>
+                <circle cx="6" cy="6" r="3"/>
+                <path d="M6 21V9a9 9 0 0 0 9 9"/>
+            </svg>
+            <p>Descreva a mudança que você quer no projeto. O <strong class="marca-nome">Shark Git</strong> usa IA para editar os arquivos e criar o commit direto no GitHub.</p>
+        </div>
+    </main>
+
+    <!-- Input Area -->
+    <footer id="input-area">
+        <div id="file-preview-area" class="file-preview-area hidden">
+            <div id="file-preview-list" class="file-preview-list"></div>
+        </div>
+        <!-- Alvo do pedido. São dois canais diferentes: o código vai por commit no
+             GitHub, o banco vai pela API do Lovable. Escolher explicitamente evita
+             a IA adivinhar errado ("crie a tabela de produtos" pode ser arquivo ou
+             tabela de verdade). -->
+        <div id="mode-switch" class="mode-switch hidden">
+            <button id="mode-code" class="mode-btn" type="button" data-mode="code">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                </svg>
+                Código
+            </button>
+            <!-- AUTOMATICO: a IA decide se o pedido e de codigo, de banco, ou dos
+                 dois. Existe porque "tela de cadastro de clientes" precisa de tabela
+                 E de tela — no modo manual o cliente fazia metade e nao entendia por
+                 que nao funcionou. -->
+            <!-- Ativo por padrao: o automatico acerta o alvo sozinho. -->
+            <button id="mode-auto" class="mode-btn active" type="button" data-mode="auto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/>
+                </svg>
+                Automático
+            </button>
+            <button id="mode-db" class="mode-btn" type="button" data-mode="db">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                    <path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/>
+                    <path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/>
+                </svg>
+                Banco de dados
+                <!-- Aviso de banco indisponível. Fica AQUI, junto do botão, porque é
+                     no chat que a pessoa sente o problema — e não nas configurações.
+                     Só aparece quando o banco travou de verdade; some quando volta.
+                     Nunca impede o envio: o cliente pode tentar quando quiser. -->
+                <span id="db-dot" class="db-dot hidden" title=""></span>
+            </button>
+        </div>
+        <p id="db-aviso" class="db-aviso hidden"></p>
+        <div class="input-wrapper">
+            <textarea
+                id="message-input"
+                placeholder="Ex: adicione um botão de tema escuro no cabeçalho..."
+                rows="1"
+                disabled
+            ></textarea>
+            <div class="input-actions">
+                <button id="attach-btn" class="btn-icon" title="Anexar arquivo" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                    </svg>
+                </button>
+                <button id="mic-btn" class="btn-icon" title="Ditar por voz" type="button" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="2" width="6" height="11" rx="3"/>
+                        <path d="M5 10v1a7 7 0 0 0 14 0v-1"/>
+                        <line x1="12" y1="18" x2="12" y2="22"/>
+                    </svg>
+                </button>
+                <button id="stop-btn" class="btn-stop hidden" title="Parar tarefa" type="button">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <rect x="6" y="6" width="12" height="12" rx="2"/>
+                    </svg>
+                </button>
+                <button id="send-btn" class="btn-send" title="Enviar" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <input type="file" id="file-input" multiple style="display: none;">
+    </footer>
+
+    <!-- Aviso de licença vencendo. Fica FORA do chat e das telas, no topo,
+         porque vale em qualquer uma delas. -->
+    <div id="renew-banner" class="renew-banner hidden">
+        <span class="renew-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>
+            </svg>
+        </span>
+        <span id="renew-texto" class="renew-texto"></span>
+        <a id="renew-btn" class="renew-btn hidden" target="_blank" rel="noopener">Renovar</a>
+        <button id="renew-x" class="renew-x" type="button" aria-label="Fechar">&times;</button>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-container">
+        <div id="status-bar" class="toast hidden">
+            <span id="status-message"></span>
+        </div>
+    </div>
+
+    <script src="panel-client.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
